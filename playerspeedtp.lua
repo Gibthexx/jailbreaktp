@@ -84,7 +84,6 @@ function utilities:get_nearest_vehicle(tried) -- unoptimized
     local nearest;
     local distance = math.huge;
 
-    for index, action in next, dependencies.modules.ui.CircleAction.Specs do -- all of the interations
         if action.IsVehicle and action.ShouldAllowEntry == true and action.Enabled == true and action.Name == "dfbfgndfb" then -- if the interaction is to enter the driver seat of a vehicle
             local vehicle = action.ValidRoot;
 
