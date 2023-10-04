@@ -165,7 +165,7 @@ function movement:move_to_position(part, cframe, speed, car, target_vehicle, tri
         task.wait(0.5);
     end;
     
-    local y_level = 30;
+    local y_level = 100;
     local higher_position = Vector3.new(vector_position.X, y_level, vector_position.Z); -- 500 studs above target position
 
     repeat -- use velocity to move towards the target position
