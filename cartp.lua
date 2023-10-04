@@ -342,7 +342,6 @@ local function teleport(cframe, tried) -- unoptimized
         movement:move_to_position(player.Character.HumanoidRootPart, cframe, dependencies.variables.player_speed);
     end;
 
-    task.wait(0.5);
     dependencies.variables.teleporting = false;
 end;
 
