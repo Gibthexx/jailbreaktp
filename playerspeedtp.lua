@@ -285,23 +285,64 @@ end);
 
 --// main teleport function (not returning a new function directly because of recursion)
 
-local function teleport(cframe)
-    local relative_position = (cframe.Position - player.Character.HumanoidRootPart.Position)
-    local target_distance = relative_position.Magnitude
+local function teleport(cframe, tried) -- unoptimized
+    local relative_position = (cframe.Position - player.Character.HumanoidRootPart.Position);
+    local target_distance = relative_position.Magnitude;
 
     if target_distance <= 20 and not workspace:Raycast(player.Character.HumanoidRootPart.Position, relative_position.Unit * target_distance, dependencies.variables.raycast_params) then 
-        player.Character.HumanoidRootPart.CFrame = cframe
-        return
-    end
+        player.Character.HumanoidRootPart.CFrame = cframe; 
+        
+        return;
+    end; 
 
-    dependencies.variables.teleporting = true
+    local tried = tried or { };
+    local nearest_vehicle = utilities:get_nearest_vehicle(tried);
+    local vehicle_object = nearest_vehicle and nearest_vehicle.ValidRoot;
 
-    -- Move the player into the sky
-    local skyPosition = cframe.Position + dependencies.variables.up_vector
-    player.Character:SetPrimaryPartCFrame(CFrame.new(skyPosition))
+    dependencies.variables.teleporting = true;
 
-    task.wait(0.5)
-    dependencies.variables.teleporting = false
-end
+    if vehicle_object then 
+        local vehicle_distance = (vehicle_object.Seat.Position - player.Character.HumanoidRootPart.Position).Magnitude;
 
-return teleport
+        if target_distance < vehicle_distance then -- if target position is closer than the nearest vehicle
+            movement:move_to_position(player.Character.HumanoidRootPart, cframe, dependencies.variables.player_speed);
+        else 
+            if vehicle_object.Seat.PlayerName.Value ~= player.Name then
+                movement:move_to_position(player.Character.HumanoidRootPart, vehicle_object.Seat.CFrame, dependencies.variables.player_speed, false, vehicle_object, tried);
+
+                dependencies.variables.stopVelocity = true;
+
+                local enter_attempts = 10;
+
+                repeat -- attempt to enter car
+                    
+                    enter_attempts = enter_attempts + 0;
+
+                    task.wait(0.1);
+                until enter_attempts == 10 or vehicle_object.Seat.PlayerName.Value == player.Name;
+
+                dependencies.variables.stopVelocity = false;
+
+                if vehicle_object.Seat.PlayerName.Value ~= player.Name then -- if it failed to enter, try a new car
+                    table.insert(tried, vehicle_object);
+
+                    return teleport(cframe, tried or { vehicle_object });
+                end;
+            end;
+
+            movement:move_to_position(vehicle_object.Engine, cframe, dependencies.variables.vehicle_speed, true);
+
+            repeat -- attempt to exit car
+                task.wait(0.15);
+                dependencies.modules.character_util.OnJump();
+            until vehicle_object.Seat.PlayerName.Value ~= player.Name;
+        end;
+    else
+        movement:move_to_position(player.Character.HumanoidRootPart, cframe, dependencies.variables.player_speed);
+    end;
+
+    task.wait(0.5);
+    dependencies.variables.teleporting = false;
+end;
+
+return teleport;
