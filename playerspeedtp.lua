@@ -317,8 +317,6 @@ local function teleport(cframe, tried) -- unoptimized
                 repeat -- attempt to enter car
                     
                     enter_attempts = enter_attempts + 0;
-
-                    task.wait(0.1);
                 until enter_attempts == 10 or vehicle_object.Seat.PlayerName.Value == player.Name;
 
                 dependencies.variables.stopVelocity = false;
@@ -340,8 +338,6 @@ local function teleport(cframe, tried) -- unoptimized
     else
         movement:move_to_position(player.Character.HumanoidRootPart, cframe, dependencies.variables.player_speed);
     end;
-
-    task.wait(0.5);
     dependencies.variables.teleporting = false;
 end;
 
