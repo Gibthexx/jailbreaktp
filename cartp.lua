@@ -42,13 +42,13 @@ local player = players.LocalPlayer;
 
 local dependencies = {
     variables = {
-        up_vector = Vector3.new(0, 100, 0),
+        up_vector = Vector3.new(0, 500, 0),
         raycast_params = RaycastParams.new(),
         path = pathfinding_service:CreatePath({WaypointSpacing = 3}),
-        player_speed = 350, 
-        vehicle_speed = 550,
+        player_speed = 150, 
+        vehicle_speed = 450,
         teleporting = false,
-        stopVelocity = true
+        stopVelocity = false
     },
     modules = {
         ui = require(replicated_storage.Module.UI),
