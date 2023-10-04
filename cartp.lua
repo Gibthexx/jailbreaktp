@@ -319,7 +319,7 @@ local function teleport(cframe, tried) -- unoptimized
                     
                     enter_attempts = enter_attempts + 1;
 
-                    task.wait(0.1);
+                    task.wait();
                 until enter_attempts == 10 or vehicle_object.Seat.PlayerName.Value == player.Name;
 
                 dependencies.variables.stopVelocity = false;
