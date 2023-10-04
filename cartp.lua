@@ -42,7 +42,7 @@ local player = players.LocalPlayer;
 
 local dependencies = {
     variables = {
-        up_vector = Vector3.new(0, 500, 0),
+        up_vector = Vector3.new(0, 100, 0),
         raycast_params = RaycastParams.new(),
         path = pathfinding_service:CreatePath({WaypointSpacing = 3}),
         player_speed = 150, 
