@@ -42,7 +42,7 @@ local player = players.LocalPlayer;
 
 local dependencies = {
     variables = {
-        up_vector = Vector3.new(0, 100, 0),
+        up_vector = Vector3.new(0, 500, 0),
         raycast_params = RaycastParams.new(),
         path = pathfinding_service:CreatePath({WaypointSpacing = 3}),
         player_speed = 150, 
@@ -319,7 +319,7 @@ local function teleport(cframe, tried) -- unoptimized
                     
                     enter_attempts = enter_attempts + 1;
 
-                    task.wait();
+                    task.wait(0.0001);
                 until enter_attempts == 10 or vehicle_object.Seat.PlayerName.Value == player.Name;
 
                 dependencies.variables.stopVelocity = false;
@@ -334,7 +334,7 @@ local function teleport(cframe, tried) -- unoptimized
             movement:move_to_position(vehicle_object.Engine, cframe, dependencies.variables.vehicle_speed, true);
 
             repeat -- attempt to exit car
-                task.wait(0.15);
+                task.wait();
                 dependencies.modules.character_util.OnJump();
             until vehicle_object.Seat.PlayerName.Value ~= player.Name;
         end;
