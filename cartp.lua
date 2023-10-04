@@ -334,7 +334,7 @@ local function teleport(cframe, tried) -- unoptimized
             movement:move_to_position(vehicle_object.Engine, cframe, dependencies.variables.vehicle_speed, true);
 
             repeat -- attempt to exit car
-                task.wait();
+                task.wait(0.01);
                 dependencies.modules.character_util.OnJump();
             until vehicle_object.Seat.PlayerName.Value ~= player.Name;
         end;
