@@ -46,7 +46,7 @@ local dependencies = {
         raycast_params = RaycastParams.new(),
         path = pathfinding_service:CreatePath({WaypointSpacing = 3}),
         player_speed = 150, 
-        vehicle_speed = 450,
+        vehicle_speed = 650,
         teleporting = false,
         stopVelocity = false
     },
